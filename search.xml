@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title>博客部署步骤</title>
+      <link href="/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/"/>
+      <url>/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/</url>
+      
+        <content type="html"><![CDATA[<h3 id="新建博客（在source根目录中-posts打开Bash"><a href="#新建博客（在source根目录中-posts打开Bash" class="headerlink" title="新建博客（在source根目录中_posts打开Bash)"></a>新建博客（在source根目录中_posts打开Bash)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;...&quot;</span></span><br></pre></td></tr></table></figure><h2 id="清空缓存"><a href="#清空缓存" class="headerlink" title="清空缓存"></a>清空缓存</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br></pre></td></tr></table></figure><h3 id="上传服务器并预览"><a href="#上传服务器并预览" class="headerlink" title="上传服务器并预览"></a>上传服务器并预览</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure><h3 id="生成新的静态文件"><a href="#生成新的静态文件" class="headerlink" title="生成新的静态文件"></a>生成新的静态文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure><h3 id="部署到远程站点"><a href="#部署到远程站点" class="headerlink" title="部署到远程站点"></a>部署到远程站点</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
