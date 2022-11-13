@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="博客部署步骤, Hexo">
+    <meta name="keywords" content="螺旋矩阵II, Hexo">
     <meta name="description" content="世界五彩，我执纯白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>博客部署步骤 | Hexo</title>
+    <title>螺旋矩阵II | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">博客部署步骤</h1>
+                    <h1 class="description center-align post-title">螺旋矩阵II</h1>
                 </div>
             </div>
         </div>
@@ -429,9 +429,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%95%B0%E7%BB%84/">
+                                <span class="chip bg-color">数组</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -443,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-08-27
+                    2022-11-13
                 </div>
                 
 
@@ -467,16 +471,89 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="新建博客（在source根目录中-posts打开Bash"><a href="#新建博客（在source根目录中-posts打开Bash" class="headerlink" title="新建博客（在source根目录中_posts打开Bash)"></a>新建博客（在source根目录中_posts打开Bash)</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"..."</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <h2 id="59-螺旋矩阵II"><a href="#59-螺旋矩阵II" class="headerlink" title="59.螺旋矩阵II"></a>59.螺旋矩阵II</h2><p>给定一个正整数 n，生成一个包含 1 到 n^2 所有元素，且元素按顺时针顺序螺旋排列的正方形矩阵。</p>
+<p>示例:</p>
+<p>输入: 3 输出: [ [ 1, 2, 3 ], [ 8, 9, 4 ], [ 7, 6, 5 ] ]</p>
+<h2 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h2><p>模拟顺时针画矩阵的过程:</p>
+<ul>
+<li>填充上行从左到右</li>
+<li>填充右列从上到下</li>
+<li>填充下行从右到左</li>
+<li>填充左列从下到上</li>
+</ul>
+<p>由外向内一圈一圈这么画下去。</p>
+<p>这里一圈下来，我们要画每四条边，这四条边怎么画，每画一条边都要坚持一致的左闭右开，或者左开右闭的原则，这样这一圈才能按照统一的规则画下来。</p>
+<p>那么我按照左闭右开的原则，来画一圈，大家看一下：</p>
+<p><img src="https://code-thinking-1253855093.file.myqcloud.com/pics/20220922102236.png" alt="img"></p>
+<p>这里每一种颜色，代表一条边，我们遍历的长度，可以看出每一个拐角处的处理规则，拐角处让给新的一条边来继续画。</p>
+<p>这也是坚持了每条边左闭右开的原则。</p>
+<p>Java：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token function">generateMatrix</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> loop <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  <span class="token comment">// 控制循环次数</span>
+        <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">]</span> res <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> start <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>  <span class="token comment">// 每次循环的开始点(start, start)</span>
+        <span class="token keyword">int</span> count <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>  <span class="token comment">// 定义填充数字</span>
+        <span class="token keyword">int</span> i<span class="token punctuation">,</span> j<span class="token punctuation">;</span>
 
-<h2 id="清空缓存"><a href="#清空缓存" class="headerlink" title="清空缓存"></a>清空缓存</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>loop<span class="token operator">++</span> <span class="token operator">&lt;</span> n <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 判断边界后，loop从1开始</span>
+            <span class="token comment">// 模拟上侧从左到右</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span>j <span class="token operator">=</span> start<span class="token punctuation">;</span> j <span class="token operator">&lt;</span> n <span class="token operator">-</span> loop<span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                res<span class="token punctuation">[</span>start<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> count<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
 
-<h3 id="上传服务器并预览"><a href="#上传服务器并预览" class="headerlink" title="上传服务器并预览"></a>上传服务器并预览</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+            <span class="token comment">// 模拟右侧从上到下</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> start<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n <span class="token operator">-</span> loop<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> count<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
 
-<h3 id="生成新的静态文件"><a href="#生成新的静态文件" class="headerlink" title="生成新的静态文件"></a>生成新的静态文件</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo g<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+            <span class="token comment">// 模拟下侧从右到左</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> j <span class="token operator">>=</span> loop<span class="token punctuation">;</span> j<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> count<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
 
-<h3 id="部署到远程站点"><a href="#部署到远程站点" class="headerlink" title="部署到远程站点"></a>部署到远程站点</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+            <span class="token comment">// 模拟左侧从下到上</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span> i <span class="token operator">>=</span> loop<span class="token punctuation">;</span> i<span class="token operator">--</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                res<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> count<span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            start<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
 
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            res<span class="token punctuation">[</span>start<span class="token punctuation">]</span><span class="token punctuation">[</span>start<span class="token punctuation">]</span> <span class="token operator">=</span> count<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">return</span> res<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>python3:</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">generateMatrix</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> n<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> List<span class="token punctuation">[</span>List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        nums <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">*</span> n <span class="token keyword">for</span> _ <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        startx<span class="token punctuation">,</span> starty <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span>               <span class="token comment"># 起始点</span>
+        loop<span class="token punctuation">,</span> mid <span class="token operator">=</span> n <span class="token operator">//</span> <span class="token number">2</span><span class="token punctuation">,</span> n <span class="token operator">//</span> <span class="token number">2</span>          <span class="token comment"># 迭代次数、n为奇数时，矩阵的中心点</span>
+        count <span class="token operator">=</span> <span class="token number">1</span>                           <span class="token comment"># 计数</span>
+
+        <span class="token keyword">for</span> offset <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> loop <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">:</span>      <span class="token comment"># 每循环一层偏移量加1，偏移量从1开始</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>starty<span class="token punctuation">,</span> n <span class="token operator">-</span> offset<span class="token punctuation">)</span> <span class="token punctuation">:</span>    <span class="token comment"># 从左至右，左闭右开</span>
+                nums<span class="token punctuation">[</span>startx<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> count
+                count <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>startx<span class="token punctuation">,</span> n <span class="token operator">-</span> offset<span class="token punctuation">)</span> <span class="token punctuation">:</span>    <span class="token comment"># 从上至下</span>
+                nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>n <span class="token operator">-</span> offset<span class="token punctuation">]</span> <span class="token operator">=</span> count
+                count <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n <span class="token operator">-</span> offset<span class="token punctuation">,</span> starty<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token comment"># 从右至左</span>
+                nums<span class="token punctuation">[</span>n <span class="token operator">-</span> offset<span class="token punctuation">]</span><span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> count
+                count <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span>n <span class="token operator">-</span> offset<span class="token punctuation">,</span> startx<span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token comment"># 从下至上</span>
+                nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>starty<span class="token punctuation">]</span> <span class="token operator">=</span> count
+                count <span class="token operator">+=</span> <span class="token number">1</span>                
+            startx <span class="token operator">+=</span> <span class="token number">1</span>         <span class="token comment"># 更新起始点</span>
+            starty <span class="token operator">+=</span> <span class="token number">1</span>
+
+        <span class="token keyword">if</span> n <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">:</span>			<span class="token comment"># n为奇数时，填充中心点</span>
+            nums<span class="token punctuation">[</span>mid<span class="token punctuation">]</span><span class="token punctuation">[</span>mid<span class="token punctuation">]</span> <span class="token operator">=</span> count 
+        <span class="token keyword">return</span> nums<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -503,7 +580,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://madridista7.github.io/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/">http://madridista7.github.io/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/</a>
+                    <a href="http://madridista7.github.io/2022/11/13/%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II/">http://madridista7.github.io/2022/11/13/%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -540,7 +617,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E6%95%B0%E7%BB%84/">
+                                    <span class="chip bg-color">数组</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -712,13 +793,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/11/13/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">
+                <a href="/2022/11/13/%E6%95%B0%E7%BB%84%E6%80%BB%E7%BB%93/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="二分查找">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="数组总结">
                         
-                        <span class="card-title">二分查找</span>
+                        <span class="card-title">数组总结</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -754,16 +835,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/">
+                <a href="/2022/11/13/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="博客部署步骤">
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="长度最小的子数组">
                         
-                        <span class="card-title">博客部署步骤</span>
+                        <span class="card-title">长度最小的子数组</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -774,7 +855,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-13
                             </span>
                         <span class="publish-author">
                             
@@ -784,7 +865,14 @@
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%95%B0%E7%BB%84/">
+                        <span class="chip bg-color">数组</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>

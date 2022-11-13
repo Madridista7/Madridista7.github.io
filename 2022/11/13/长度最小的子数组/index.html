@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="博客部署步骤, Hexo">
+    <meta name="keywords" content="长度最小的子数组, Hexo">
     <meta name="description" content="世界五彩，我执纯白">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>博客部署步骤 | Hexo</title>
+    <title>长度最小的子数组 | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">博客部署步骤</h1>
+                    <h1 class="description center-align post-title">长度最小的子数组</h1>
                 </div>
             </div>
         </div>
@@ -429,9 +429,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%95%B0%E7%BB%84/">
+                                <span class="chip bg-color">数组</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -443,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-08-27
+                    2022-11-13
                 </div>
                 
 
@@ -467,16 +471,114 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="新建博客（在source根目录中-posts打开Bash"><a href="#新建博客（在source根目录中-posts打开Bash" class="headerlink" title="新建博客（在source根目录中_posts打开Bash)"></a>新建博客（在source根目录中_posts打开Bash)</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"..."</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+                <h1 id="209-长度最小的子数组"><a href="#209-长度最小的子数组" class="headerlink" title="209.长度最小的子数组"></a>209.长度最小的子数组</h1><p>给定一个含有 n 个正整数的数组和一个正整数 s ，找出该数组中满足其和 ≥ s 的长度最小的 连续 子数组，并返回其长度。如果不存在符合条件的子数组，返回 0。</p>
+<p>示例：</p>
+<p>输入：s = 7, nums = [2,3,1,2,4,3] 输出：2 解释：子数组 [4,3] 是该条件下的长度最小的子数组。</p>
+<h2 id="暴力解法-时间复杂度：O-n-2-空间复杂度：O-1"><a href="#暴力解法-时间复杂度：O-n-2-空间复杂度：O-1" class="headerlink" title="暴力解法   时间复杂度：O(n^2)  空间复杂度：O(1)"></a>暴力解法   时间复杂度：O(n^2)  空间复杂度：O(1)</h2><p>这道题目暴力解法当然是 两个for循环，然后不断的寻找符合条件的子序列，时间复杂度很明显是O(n^2)。</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-cpp" data-language="cpp"><code class="language-cpp"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+    <span class="token keyword">int</span> <span class="token function">minSubArrayLen</span><span class="token punctuation">(</span><span class="token keyword">int</span> s<span class="token punctuation">,</span> vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">></span><span class="token operator">&amp;</span> nums<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> result <span class="token operator">=</span> INT32_MAX<span class="token punctuation">;</span> <span class="token comment">// 最终的结果</span>
+        <span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 子序列的数值之和</span>
+        <span class="token keyword">int</span> subLength <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// 子序列的长度</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 设置子序列起点为i</span>
+            sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> j <span class="token operator">=</span> i<span class="token punctuation">;</span> j <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> j<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 设置子序列终止位置为j</span>
+                sum <span class="token operator">+=</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>sum <span class="token operator">>=</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> <span class="token comment">// 一旦发现子序列和超过了s，更新result</span>
+                    subLength <span class="token operator">=</span> j <span class="token operator">-</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">// 取子序列的长度</span>
+                    result <span class="token operator">=</span> result <span class="token operator">&lt;</span> subLength <span class="token operator">?</span> result <span class="token operator">:</span> subLength<span class="token punctuation">;</span>
+                    <span class="token keyword">break</span><span class="token punctuation">;</span> <span class="token comment">// 因为我们是找符合条件最短的子序列，所以一旦符合条件就break</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment">// 如果result没有被赋值的话，就返回0，说明没有符合条件的子序列</span>
+        <span class="token keyword">return</span> result <span class="token operator">==</span> INT32_MAX <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> result<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="清空缓存"><a href="#清空缓存" class="headerlink" title="清空缓存"></a>清空缓存</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo clean<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="滑动窗口-时间复杂度：O-n-空间复杂度：O-1"><a href="#滑动窗口-时间复杂度：O-n-空间复杂度：O-1" class="headerlink" title="滑动窗口  时间复杂度：O(n)  空间复杂度：O(1)"></a>滑动窗口  时间复杂度：O(n)  空间复杂度：O(1)</h2><p>接下来就开始介绍数组操作中另一个重要的方法：<strong>滑动窗口</strong>。</p>
+<p>所谓滑动窗口，<strong>就是不断的调节子序列的起始位置和终止位置，从而得出我们要想的结果</strong>。</p>
+<p>在暴力解法中，是一个for循环滑动窗口的起始位置，一个for循环为滑动窗口的终止位置，用两个for循环 完成了一个不断搜索区间的过程。</p>
+<p>那么滑动窗口如何用一个for循环来完成这个操作呢。</p>
+<p>首先要思考 如果用一个for循环，那么应该表示 滑动窗口的起始位置，还是终止位置。</p>
+<p>如果只用一个for循环来表示 滑动窗口的起始位置，那么如何遍历剩下的终止位置？</p>
+<p>此时难免再次陷入 暴力解法的怪圈。</p>
+<p>所以 只用一个for循环，那么这个循环的索引，一定是表示 滑动窗口的终止位置。</p>
+<p>那么问题来了， 滑动窗口的起始位置如何移动呢？</p>
+<p>这里还是以题目中的示例来举例，s=7， 数组是 2，3，1，2，4，3，来看一下查找的过程：</p>
+<p><img src="https://code-thinking.cdn.bcebos.com/gifs/209.%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84.gif" alt="209.长度最小的子数组"></p>
+<p>最后找到 4，3 是最短距离。</p>
+<p>其实从动画中可以发现滑动窗口也可以理解为双指针法的一种！只不过这种解法更像是一个窗口的移动，所以叫做滑动窗口更适合一些。</p>
+<p>在本题中实现滑动窗口，主要确定如下三点：</p>
+<ul>
+<li>窗口内是什么？</li>
+<li>如何移动窗口的起始位置？</li>
+<li>如何移动窗口的结束位置？</li>
+</ul>
+<p>窗口就是 满足其和 ≥ s 的长度最小的 连续 子数组。</p>
+<p>窗口的起始位置如何移动：如果当前窗口的值大于s了，窗口就要向前移动了（也就是该缩小了）。</p>
+<p>窗口的结束位置如何移动：窗口的结束位置就是遍历数组的指针，也就是for循环里的索引。</p>
+<p>解题的关键在于 窗口的起始位置如何移动，如图所示：</p>
+<p><img src="https://img-blog.csdnimg.cn/20210312160441942.png" alt="leetcode_209"></p>
+<p>可以发现<strong>滑动窗口的精妙之处在于根据当前子序列和大小的情况，不断调节子序列的起始位置。从而将O(n^2)暴力解法降为O(n)。</strong></p>
+<p>tip:不要以为for里放一个while就以为是O(n^2)啊， 主要是看每一个元素被操作的次数，每个元素在滑动窗后进来操作一次，出去操作一次，每个元素都是被操作两次，所以时间复杂度是 2 × n 也就是O(n)。</p>
+<p>Java：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
 
-<h3 id="上传服务器并预览"><a href="#上传服务器并预览" class="headerlink" title="上传服务器并预览"></a>上传服务器并预览</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo s<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+    <span class="token comment">// 滑动窗口</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">minSubArrayLen</span><span class="token punctuation">(</span><span class="token keyword">int</span> s<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> nums<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">int</span> left <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> result <span class="token operator">=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token constant">MAX_VALUE</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> right <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> right <span class="token operator">&lt;</span> nums<span class="token punctuation">.</span>length<span class="token punctuation">;</span> right<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            sum <span class="token operator">+=</span> nums<span class="token punctuation">[</span>right<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>sum <span class="token operator">>=</span> s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                result <span class="token operator">=</span> <span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">min</span><span class="token punctuation">(</span>result<span class="token punctuation">,</span> right <span class="token operator">-</span> left <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                sum <span class="token operator">-=</span> nums<span class="token punctuation">[</span>left<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> result <span class="token operator">==</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token constant">MAX_VALUE</span> <span class="token operator">?</span> <span class="token number">0</span> <span class="token operator">:</span> result<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="生成新的静态文件"><a href="#生成新的静态文件" class="headerlink" title="生成新的静态文件"></a>生成新的静态文件</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo g<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Python：</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">minSubArrayLen</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> s<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> nums<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+        <span class="token comment"># 定义一个无限大的数</span>
+        res <span class="token operator">=</span> <span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span>
+        Sum <span class="token operator">=</span> <span class="token number">0</span>
+        index <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            Sum <span class="token operator">+=</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+            <span class="token keyword">while</span> Sum <span class="token operator">>=</span> s<span class="token punctuation">:</span>
+                res <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>res<span class="token punctuation">,</span> i<span class="token operator">-</span>index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+                Sum <span class="token operator">-=</span> nums<span class="token punctuation">[</span>index<span class="token punctuation">]</span>
+                index <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">return</span> <span class="token number">0</span> <span class="token keyword">if</span> res<span class="token operator">==</span><span class="token builtin">float</span><span class="token punctuation">(</span><span class="token string">"inf"</span><span class="token punctuation">)</span> <span class="token keyword">else</span> res<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h3 id="部署到远程站点"><a href="#部署到远程站点" class="headerlink" title="部署到远程站点"></a>部署到远程站点</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ hexo d<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
+
+<pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment"># 滑动窗口</span>
+<span class="token keyword">class</span> <span class="token class-name">Solution</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">minSubArrayLen</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> target<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span> nums<span class="token punctuation">:</span> List<span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> nums <span class="token keyword">is</span> <span class="token boolean">None</span> <span class="token keyword">or</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">:</span> 
+            <span class="token keyword">return</span> <span class="token number">0</span> 
+        lenf <span class="token operator">=</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span>
+        total <span class="token operator">=</span> <span class="token number">0</span>
+        i <span class="token operator">=</span> j <span class="token operator">=</span> <span class="token number">0</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>j <span class="token operator">&lt;</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            total <span class="token operator">=</span> total <span class="token operator">+</span> nums<span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+            j <span class="token operator">+=</span> <span class="token number">1</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span>total <span class="token operator">>=</span> target<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                lenf <span class="token operator">=</span> <span class="token builtin">min</span><span class="token punctuation">(</span>lenf<span class="token punctuation">,</span> j <span class="token operator">-</span> i<span class="token punctuation">)</span>
+                total <span class="token operator">=</span> total <span class="token operator">-</span> nums<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+                i <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token keyword">if</span> lenf <span class="token operator">==</span> <span class="token builtin">len</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token number">0</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span> 
+            <span class="token keyword">return</span> lenf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -503,7 +605,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://madridista7.github.io/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/">http://madridista7.github.io/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/</a>
+                    <a href="http://madridista7.github.io/2022/11/13/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/">http://madridista7.github.io/2022/11/13/%E9%95%BF%E5%BA%A6%E6%9C%80%E5%B0%8F%E7%9A%84%E5%AD%90%E6%95%B0%E7%BB%84/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -540,7 +642,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/%E6%95%B0%E7%BB%84/">
+                                    <span class="chip bg-color">数组</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -712,13 +818,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2022/11/13/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">
+                <a href="/2022/11/13/%E8%9E%BA%E6%97%8B%E7%9F%A9%E9%98%B5II/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="二分查找">
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="螺旋矩阵II">
                         
-                        <span class="card-title">二分查找</span>
+                        <span class="card-title">螺旋矩阵II</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -754,16 +860,16 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/08/27/%E5%8D%9A%E5%AE%A2%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4/">
+                <a href="/2022/11/13/%E6%9C%89%E5%BA%8F%E6%95%B0%E7%BB%84%E7%9A%84%E5%B9%B3%E6%96%B9/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="博客部署步骤">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="有序数组的平方">
                         
-                        <span class="card-title">博客部署步骤</span>
+                        <span class="card-title">有序数组的平方</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -774,7 +880,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-08-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-11-13
                             </span>
                         <span class="publish-author">
                             
@@ -784,7 +890,14 @@
                         </span>
                     </div>
                 </div>
-
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%95%B0%E7%BB%84/">
+                        <span class="chip bg-color">数组</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
